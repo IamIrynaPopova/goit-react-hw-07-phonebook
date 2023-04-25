@@ -27,7 +27,7 @@ export const ContactList = () => {
         })}
       </ul>
       {isLoading && <Loader />}
-      {error !== null && <b>{error}</b>}
+      {error !== null && <b>Sorry, error 🙁: {error}</b>}
     </>
   );
 };

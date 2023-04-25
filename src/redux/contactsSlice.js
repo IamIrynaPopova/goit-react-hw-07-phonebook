@@ -26,7 +26,7 @@ const contactsSlice = createSlice({
     },
     [deleteContact.fulfilled](state, action) {
       state.items = state.items.filter(
-        contact => contact.id !== action.payload.idж
+        contact => contact.id !== action.payload.id
       );
     },
   },

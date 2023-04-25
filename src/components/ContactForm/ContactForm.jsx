@@ -1,33 +1,31 @@
-import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { createUser } from '../../redux/contactsSlice';
+import { addContact } from '../../redux/operations';
 import css from './ContactForm.module.css';
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const { items } = useSelector(state => state.contacts);
 
-  const addContact = e => {
+  const addUser = e => {
     e.preventDefault();
     const form = e.currentTarget;
     const name = form.elements.name.value;
     const number = form.elements.number.value;
-    if (contacts.find(contact => contact.name === name)) {
+    if (items.find(contact => contact.name === name)) {
       form.elements.name.value = '';
       return alert(`${name} is already in contacts`);
     }
     dispatch(
-      createUser({
-        id: nanoid(),
+      addContact({
         name: name,
-        number: number,
+        phone: number,
       })
     );
     form.reset();
   };
 
   return (
-    <form className={css.form} onSubmit={addContact}>
+    <form className={css.form} onSubmit={addUser}>
       <label className={css.name}>
         Name
         <input
@@ -56,5 +54,3 @@ export const ContactForm = () => {
     </form>
   );
 };
-
-

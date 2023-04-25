@@ -1,26 +1,28 @@
 import { ContactItem } from '../ContactItem/ContactItem';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchContacts } from '../../redux/operations';
 import css from './ContactList.module.css';
 import PropTypes from 'prop-types';
 
 export const ContactList = () => {
-  const contacts = useSelector(state => state.contacts);
+  const items = useSelector(state => state.contacts.items);
   const filterValue = useSelector(state => state.filter);
- 
-  const filteredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filterValue.toLowerCase()));
+  const filteredContacts = items.filter(contact =>
+    contact.name.toLowerCase().includes(filterValue.toLowerCase())
+  );
 
-   return (
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  return (
     <ul className={css.list}>
       {filteredContacts.map(contact => {
-        const { id, name, number } = contact;
+        const { id, name, phone } = contact;
         return (
-          <ContactItem
-            key={id}
-            id={id}
-            name={name}
-            number={number}
-          ></ContactItem>
+          <ContactItem key={id} id={id} name={name} phone={phone}></ContactItem>
         );
       })}
     </ul>
@@ -35,4 +37,4 @@ ContactList.propTypes = {
       number: PropTypes.string.isRequired,
     })
   ),
- };
+};
